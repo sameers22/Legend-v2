@@ -1,20 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { Slot } from 'expo-router';
 import SplashScreen from './SplashScreen';
+import Onboarding from './Onboarding';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { View } from 'react-native';
 
 export default function RootLayout() {
-  const [loading, setLoading] = useState(true);
+  const [currentScreen, setCurrentScreen] = useState<'splash' | 'onboarding' | 'main'>('splash');
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2500); // Show splash for 2.5 seconds
+    const showSplashThenDecide = async () => {
+      await new Promise(resolve => setTimeout(resolve, 2500)); // Wait for splash
 
-    return () => clearTimeout(timer);
+      const onboardingDone = await AsyncStorage.getItem('onboardingCompleted');
+      if (onboardingDone === 'true') {
+        setCurrentScreen('main');
+      } else {
+        setCurrentScreen('onboarding');
+      }
+    };
+
+    showSplashThenDecide();
   }, []);
 
-  if (loading) {
+  if (currentScreen === 'splash') {
     return <SplashScreen />;
+  }
+
+  if (currentScreen === 'onboarding') {
+    return <Onboarding />;
   }
 
   return <Slot />;
