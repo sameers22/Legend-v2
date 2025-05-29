@@ -4,6 +4,7 @@ import SplashScreen from './SplashScreen';
 import Onboarding from './Onboarding';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View } from 'react-native';
+import 'react-native-url-polyfill/auto';
 
 export default function RootLayout() {
   const [currentScreen, setCurrentScreen] = useState<'splash' | 'onboarding' | 'main'>('splash');
