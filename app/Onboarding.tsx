@@ -1,12 +1,6 @@
+// app/Onboarding.tsx
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  Dimensions,
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 
@@ -30,7 +24,7 @@ const steps = [
   },
 ];
 
-const Onboarding = () => {
+export default function Onboarding() {
   const [step, setStep] = useState(0);
   const router = useRouter();
 
@@ -39,7 +33,7 @@ const Onboarding = () => {
       setStep(step + 1);
     } else {
       await AsyncStorage.setItem('onboardingCompleted', 'true');
-      router.replace('/'); // Navigate to main tabs
+      router.replace('/login'); // go to login screen
     }
   };
 
@@ -58,9 +52,7 @@ const Onboarding = () => {
       </TouchableOpacity>
     </View>
   );
-};
-
-export default Onboarding;
+}
 
 const styles = StyleSheet.create({
   container: {
