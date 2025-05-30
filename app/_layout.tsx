@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Slot } from 'expo-router';
 import SplashScreen from './SplashScreen';
 import Onboarding from './Onboarding';
+import HomeScreen from './HomeScreen'; // ✅ Import HomeScreen
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { View } from 'react-native';
 import 'react-native-url-polyfill/auto';
 
 export default function RootLayout() {
@@ -11,7 +10,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     const showSplashThenDecide = async () => {
-      await new Promise(resolve => setTimeout(resolve, 2500)); // Wait for splash
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
       const onboardingDone = await AsyncStorage.getItem('onboardingCompleted');
       if (onboardingDone === 'true') {
@@ -24,13 +23,9 @@ export default function RootLayout() {
     showSplashThenDecide();
   }, []);
 
-  if (currentScreen === 'splash') {
-    return <SplashScreen />;
-  }
+  if (currentScreen === 'splash') return <SplashScreen />;
+  if (currentScreen === 'onboarding') return <Onboarding />;
 
-  if (currentScreen === 'onboarding') {
-    return <Onboarding />;
-  }
-
-  return <Slot />;
+  // ✅ Show Home after onboarding
+  return <HomeScreen />;
 }
