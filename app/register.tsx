@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, Alert, StyleSheet, TouchableOpacity } from 'react-native';
 
 export default function Register({ goToLogin }: { goToLogin: () => void }) {
   const [step, setStep] = useState<'form' | 'verify'>('form');
@@ -56,6 +56,10 @@ export default function Register({ goToLogin }: { goToLogin: () => void }) {
           <TextInput style={styles.input} placeholder="Birthday" onChangeText={val => setForm({ ...form, birthday: val })} />
           <TextInput style={styles.input} placeholder="Password" secureTextEntry onChangeText={val => setForm({ ...form, password: val })} />
           <Button title="Register" onPress={handleRegister} />
+          
+          <TouchableOpacity onPress={goToLogin} style={{ marginTop: 15 }}>
+            <Text style={styles.link}>Already have an account? Login</Text>
+          </TouchableOpacity>
         </>
       ) : (
         <>
@@ -72,4 +76,10 @@ const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, justifyContent: 'center' },
   header: { fontSize: 24, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 },
   input: { borderWidth: 1, padding: 10, marginBottom: 10, borderRadius: 5 },
+  link: {
+    color: '#007AFF',
+    textAlign: 'center',
+    fontSize: 16,
+    textDecorationLine: 'underline',
+  },
 });
