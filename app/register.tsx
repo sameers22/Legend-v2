@@ -1,58 +1,75 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Alert, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
 
 export default function Register({ goToLogin }: { goToLogin: () => void }) {
-  const [name, setName] = useState('');
+  const [step, setStep] = useState<'form' | 'verify'>('form');
   const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [birthday, setBirthday] = useState('');
-  const [password, setPassword] = useState('');
+  const [code, setCode] = useState('');
+  const [form, setForm] = useState({ name: '', phone: '', birthday: '', password: '' });
 
   const handleRegister = async () => {
+    const { name, phone, birthday, password } = form;
     if (!name || !email || !phone || !birthday || !password) {
-      Alert.alert('Error', 'All fields are required.');
+      Alert.alert('Error', 'All fields required');
       return;
     }
 
-    try {
-      const res = await fetch('http://192.168.12.56:3001/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, phone, birthday, password }),
-      });
+    const res = await fetch('http://192.168.12.56:3001/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...form, email }),
+    });
 
-      const data = await res.json();
+    const data = await res.json();
+    if (res.ok) {
+      Alert.alert('Code Sent', 'Check your email for a 6-digit code');
+      setStep('verify');
+    } else {
+      Alert.alert('Error', data.message);
+    }
+  };
 
-      if (res.ok) {
-        Alert.alert('Success', 'Registered successfully!');
-        goToLogin(); // Go back to login screen
-      } else {
-        Alert.alert('Error', data.message || 'Registration failed.');
-      }
-    } catch (err) {
-      Alert.alert('Error', 'Something went wrong.');
+  const handleVerify = async () => {
+    const res = await fetch('http://192.168.12.56:3001/api/verify-code', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, code }),
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      Alert.alert('Success', 'Email verified!');
+      goToLogin();
+    } else {
+      Alert.alert('Error', data.message);
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Register</Text>
-      <TextInput style={styles.input} placeholder="Full Name" onChangeText={setName} />
-      <TextInput style={styles.input} placeholder="Email" keyboardType="email-address" autoCapitalize="none" onChangeText={setEmail} />
-      <TextInput style={styles.input} placeholder="Phone Number" keyboardType="phone-pad" onChangeText={setPhone} />
-      <TextInput style={styles.input} placeholder="Birthday (YYYY-MM-DD)" onChangeText={setBirthday} />
-      <TextInput style={styles.input} placeholder="Password" secureTextEntry onChangeText={setPassword} />
-      <Button title="Register" onPress={handleRegister} />
-      <TouchableOpacity onPress={goToLogin}>
-        <Text style={styles.link}>Already have an account? Login</Text>
-      </TouchableOpacity>
+      {step === 'form' ? (
+        <>
+          <Text style={styles.header}>Register</Text>
+          <TextInput style={styles.input} placeholder="Name" onChangeText={val => setForm({ ...form, name: val })} />
+          <TextInput style={styles.input} placeholder="Email" onChangeText={setEmail} />
+          <TextInput style={styles.input} placeholder="Phone" onChangeText={val => setForm({ ...form, phone: val })} />
+          <TextInput style={styles.input} placeholder="Birthday" onChangeText={val => setForm({ ...form, birthday: val })} />
+          <TextInput style={styles.input} placeholder="Password" secureTextEntry onChangeText={val => setForm({ ...form, password: val })} />
+          <Button title="Register" onPress={handleRegister} />
+        </>
+      ) : (
+        <>
+          <Text style={styles.header}>Verify Email</Text>
+          <TextInput style={styles.input} placeholder="Enter 6-digit code" keyboardType="number-pad" onChangeText={setCode} />
+          <Button title="Verify Code" onPress={handleVerify} />
+        </>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 20 },
-  header: { fontSize: 28, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
-  input: { borderWidth: 1, borderColor: '#ccc', marginBottom: 15, padding: 10, borderRadius: 5 },
-  link: { color: 'blue', textAlign: 'center', marginTop: 20, fontSize: 16 },
+  container: { flex: 1, padding: 20, justifyContent: 'center' },
+  header: { fontSize: 24, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 },
+  input: { borderWidth: 1, padding: 10, marginBottom: 10, borderRadius: 5 },
 });

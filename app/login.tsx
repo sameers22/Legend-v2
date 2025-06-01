@@ -13,6 +13,11 @@ export default function Login({
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert('Missing Fields', 'Please enter both email and password.');
+      return;
+    }
+
     try {
       const res = await fetch('http://192.168.12.56:3001/api/login', {
         method: 'POST',
@@ -23,23 +28,50 @@ export default function Login({
       const data = await res.json();
 
       if (res.ok) {
+        if (!data.user.verified) {
+          Alert.alert(
+            'Email Not Verified',
+            'Your email is not verified. Please check your inbox for the verification code.'
+          );
+          return;
+        }
+
+        // ✅ Store login session
         await AsyncStorage.setItem('loggedIn', 'true');
         await AsyncStorage.setItem('userData', JSON.stringify(data.user));
-        goToMain(); // ✅ Tell RootLayout to go to Drawer
+
+        goToMain(); // ✅ Navigate to main app (drawer/home)
       } else {
         Alert.alert('Login Failed', data.message || 'Invalid credentials');
       }
     } catch (err) {
-      Alert.alert('Error', 'Server error occurred.');
+      Alert.alert('Error', 'Server error occurred. Please try again later.');
     }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Login</Text>
-      <TextInput style={styles.input} placeholder="Email" onChangeText={setEmail} autoCapitalize="none" />
-      <TextInput style={styles.input} placeholder="Password" secureTextEntry onChangeText={setPassword} />
+
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+        autoCapitalize="none"
+        keyboardType="email-address"
+      />
+
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+      />
+
       <Button title="Login" onPress={handleLogin} />
+
       <View style={{ marginTop: 10 }} />
       <Button title="Don't have an account? Register" onPress={goToRegister} />
     </View>
