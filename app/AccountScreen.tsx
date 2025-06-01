@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRouter } from 'expo-router';
 
-export default function AccountScreen() {
+type Props = {
+  goToLogin: () => void;
+};
+
+export default function AccountScreen({ goToLogin }: Props) {
   const [user, setUser] = useState<{ name: string; email: string; phone: string; birthday: string } | null>(null);
-  const router = useRouter();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -20,7 +22,7 @@ export default function AccountScreen() {
   const handleLogout = async () => {
     await AsyncStorage.removeItem('loggedIn');
     await AsyncStorage.removeItem('userData');
-    router.replace('/login');
+    goToLogin(); // 👈 Use passed prop
   };
 
   return (
