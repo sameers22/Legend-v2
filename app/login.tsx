@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function Login({ goToRegister }: { goToRegister: () => void }) {
+export default function Login({
+  goToRegister,
+  goToMain,
+}: {
+  goToRegister: () => void;
+  goToMain: () => void;
+}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -18,7 +24,8 @@ export default function Login({ goToRegister }: { goToRegister: () => void }) {
 
       if (res.ok) {
         await AsyncStorage.setItem('loggedIn', 'true');
-        location.reload(); // Forces RootLayout to rerun and show HomeScreen
+        await AsyncStorage.setItem('userData', JSON.stringify(data.user));
+        goToMain(); // ✅ Tell RootLayout to go to Drawer
       } else {
         Alert.alert('Login Failed', data.message || 'Invalid credentials');
       }

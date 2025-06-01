@@ -6,6 +6,7 @@ import Login from './login';
 import Register from './register';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import 'react-native-url-polyfill/auto';
+import DrawerNavigator from './DrawerNavigator';
 
 export default function RootLayout() {
   const [currentScreen, setCurrentScreen] = useState<'splash' | 'onboarding' | 'login' | 'register' | 'main'>('splash');
@@ -19,9 +20,9 @@ export default function RootLayout() {
 
       if (onboardingDone === 'true') {
         if (loggedIn === 'true') {
-          setCurrentScreen('main');  // Home
+          setCurrentScreen('main');
         } else {
-          setCurrentScreen('login'); // Login
+          setCurrentScreen('login');
         }
       } else {
         setCurrentScreen('onboarding');
@@ -33,7 +34,15 @@ export default function RootLayout() {
 
   if (currentScreen === 'splash') return <SplashScreen />;
   if (currentScreen === 'onboarding') return <Onboarding />;
-  if (currentScreen === 'login') return <Login goToRegister={() => setCurrentScreen('register')} />;
-  if (currentScreen === 'register') return <Register goToLogin={() => setCurrentScreen('login')} />;
-  return <HomeScreen />;
+  if (currentScreen === 'login')
+    return (
+      <Login
+        goToRegister={() => setCurrentScreen('register')}
+        goToMain={() => setCurrentScreen('main')}
+      />
+    );
+  if (currentScreen === 'register')
+    return <Register goToLogin={() => setCurrentScreen('login')} />;
+
+  return <DrawerNavigator />;
 }
