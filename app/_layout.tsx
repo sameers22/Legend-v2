@@ -7,6 +7,7 @@ import Register from './register';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import 'react-native-url-polyfill/auto';
 import DrawerNavigator from './DrawerNavigator';
+import { CartProvider } from '../context/CartContext'; // ✅ added
 
 export default function RootLayout() {
   const [currentScreen, setCurrentScreen] = useState<'splash' | 'onboarding' | 'login' | 'register' | 'main'>('splash');
@@ -14,7 +15,6 @@ export default function RootLayout() {
   useEffect(() => {
     const showSplashThenDecide = async () => {
       await new Promise(resolve => setTimeout(resolve, 2000));
-
       const onboardingDone = await AsyncStorage.getItem('onboardingCompleted');
       const loggedIn = await AsyncStorage.getItem('loggedIn');
 
@@ -44,5 +44,9 @@ export default function RootLayout() {
   if (currentScreen === 'register')
     return <Register goToLogin={() => setCurrentScreen('login')} />;
 
-  return <DrawerNavigator />;
+  return (
+    <CartProvider>
+      <DrawerNavigator />
+    </CartProvider>
+  );
 }

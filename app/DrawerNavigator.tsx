@@ -8,6 +8,7 @@ import MenuScreen from './MenuScreen';
 import SauceScreen from './SauceScreen';
 import LegendSocialScreen from './LegendSocialScreen';
 import AccountScreen from './AccountScreen';
+import CartScreen from './CartScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -18,38 +19,43 @@ export default function DrawerNavigator() {
     <Drawer.Navigator
       initialRouteName="Home"
       screenOptions={{
-        headerShown: true,
-        headerTitle: '',
-        drawerType: dimensions.width >= 768 ? 'permanent' : 'front',
-        drawerStyle: {
-          backgroundColor: '#FFD700', // Black background
-          width: 250,
-        },
-        drawerLabelStyle: {
-          color: '#000000', // Black text
-          fontSize: 18,
-          marginLeft: -10,
-        },
-        drawerActiveTintColor: '#ffffff', // White text when selected
-        drawerInactiveTintColor: '#000000', // Black text normally
-        drawerActiveBackgroundColor: '#ffffff', // Dark gray when selected
-        drawerItemStyle: {
-          borderRadius: 5,
-          marginVertical: 4,
-        },
+      headerShown: true,
+      headerTitle: '',
+      headerTintColor: '#000000',
+      headerStyle: {
+        backgroundColor: '#FFD700', // Gold background color for the header
+      },
+      drawerType: dimensions.width >= 768 ? 'permanent' : 'front',
+      drawerStyle: {
+        backgroundColor: '#FFD700',
+        width: 250,
+      },
+      drawerLabelStyle: {
+        color: '#000000', // Black text
+        fontSize: 18,
+        marginLeft: -10,
+      },
+      drawerActiveTintColor: '#ffffff', // White text when selected
+      drawerInactiveTintColor: '#000000', // Black text normally
+      drawerActiveBackgroundColor: '#ffffff', // Dark gray when selected
+      drawerItemStyle: {
+        borderRadius: 5,
+        marginVertical: 4,
+      },
       }}
     >
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="Menu" component={MenuScreen} />
       <Drawer.Screen name="Sauce" component={SauceScreen} />
+      <Drawer.Screen name="Cart" component={CartScreen} />
       <Drawer.Screen name="Legend Social" component={LegendSocialScreen} />
       <Drawer.Screen name="Account">
-  {() => <AccountScreen goToLogin={() => {
+    {() => <AccountScreen goToLogin={() => {
     AsyncStorage.removeItem('loggedIn');
     AsyncStorage.removeItem('currentUser');
     location.reload(); // Forces the RootLayout to reset to login
-  }} />}
-</Drawer.Screen>
+    }} />}
+  </Drawer.Screen>
 
     </Drawer.Navigator>
   );
