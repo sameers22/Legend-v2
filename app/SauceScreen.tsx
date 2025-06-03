@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: 'bold',
     marginBottom: 20,
-    color: '#ffffff',
+    color: '#000000',
   },
   card: {
     width: screenWidth - 32,

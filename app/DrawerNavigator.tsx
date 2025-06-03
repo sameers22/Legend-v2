@@ -9,6 +9,7 @@ import SauceScreen from './SauceScreen';
 import LegendSocialScreen from './LegendSocialScreen';
 import AccountScreen from './AccountScreen';
 import CartScreen from './CartScreen';
+import BookingScreen from './BookingScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -48,6 +49,7 @@ export default function DrawerNavigator() {
       <Drawer.Screen name="Menu" component={MenuScreen} />
       <Drawer.Screen name="Sauce" component={SauceScreen} />
       <Drawer.Screen name="Cart" component={CartScreen} />
+      <Drawer.Screen name="Booking" component={BookingScreen} />
       <Drawer.Screen name="Legend Social" component={LegendSocialScreen} />
       <Drawer.Screen name="Account">
     {() => <AccountScreen goToLogin={() => {

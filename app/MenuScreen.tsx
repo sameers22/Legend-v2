@@ -1,15 +1,21 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import TakeOutScreen from './TakeOutScreen';
+import DineInScreen from './DineInScreen';
+
+const Tab = createMaterialTopTabNavigator();
 
 export default function MenuScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>🍽️ Menu Screen (Add Takeout/Dine-in tabs here)</Text>
-    </View>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarLabelStyle: { fontSize: 16, fontWeight: 'bold' },
+        tabBarIndicatorStyle: { backgroundColor: '#FFD700' },
+        tabBarStyle: { backgroundColor: '#fff' },
+      }}
+    >
+      <Tab.Screen name="Dine In" component={DineInScreen} />
+      <Tab.Screen name="Take Out" component={TakeOutScreen} />
+    </Tab.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  text: { fontSize: 24, fontWeight: 'bold' },
-});
