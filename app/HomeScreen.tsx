@@ -69,6 +69,18 @@ const HomeScreen = () => {
         <Text style={styles.title}>Welcome to Legend Cookhouse! 🍽️</Text>
         <Text style={styles.subtitle}>Where Flavor Meets Tradition</Text>
 
+        <Text style={styles.description}>
+          LEGEND COOKHOUSE is the best Guyanese-American fusion cuisine restaurant and bar located in South Ozone Park/Richmond Hill, NYC. We provide a satisfying fine dining experience, offering the best and most popular <Text style={styles.bold2}>Guyanese food dishes</Text>.
+        </Text>
+
+        <Text style={styles.description}>
+          Our menu is inspired by the flavors of the Caribbean, South America, and the United States, carefully crafted to bring bold, authentic flavors to every dish. Whether you're looking for a quick bite, a family meal, or a night out, we’ve got you covered!
+        </Text>
+
+        <Text style={styles.description}>
+          At Legend Cookhouse, we take pride in creating a warm, family-friendly atmosphere. Our goal is to keep Guyanese culinary traditions alive while also introducing new generations to our rich food culture.
+        </Text>
+
         {/* Featured Dishes */}
         <FlatList
           data={featuredItems}
@@ -144,7 +156,7 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   scrollContainer: {
     flex: 1,
-    backgroundColor: '#FFF8DC',
+    backgroundColor: '#ffffff',
   },
   container: {
     flex: 1,
@@ -153,6 +165,17 @@ const styles = StyleSheet.create({
   },
   title: { fontSize: 28, fontWeight: 'bold', color: '#D2691E', textAlign: 'center', marginBottom: 10 },
   subtitle: { fontSize: 18, color: '#333', textAlign: 'center', marginBottom: 20 },
+  description: {
+    fontSize: 18,
+    color: '#444',
+    marginBottom: 20,
+    textAlign: 'center',
+    lineHeight: 22,
+  },
+  bold2: {
+    fontWeight: 'bold',
+    color: '#8B0000',
+  },  
   sliderWrapper: { height: 260, marginBottom: 10 },
   sliderItem: {
     width: screenWidth * 0.85,
