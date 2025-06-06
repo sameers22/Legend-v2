@@ -14,7 +14,7 @@ export default function Register({ goToLogin }: { goToLogin: () => void }) {
       return;
     }
 
-    const res = await fetch('http://192.168.12.56:3001/api/register', {
+    const res = await fetch('https://legendbackend.onrender.com/api/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...form, email }),
@@ -30,7 +30,7 @@ export default function Register({ goToLogin }: { goToLogin: () => void }) {
   };
 
   const handleVerify = async () => {
-    const res = await fetch('http://192.168.12.56:3001/api/verify-code', {
+    const res = await fetch('https://legendbackend.onrender.com/api/verify-code', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, code }),
@@ -50,13 +50,39 @@ export default function Register({ goToLogin }: { goToLogin: () => void }) {
       {step === 'form' ? (
         <>
           <Text style={styles.header}>Register</Text>
-          <TextInput style={styles.input} placeholder="Name" onChangeText={val => setForm({ ...form, name: val })} />
-          <TextInput style={styles.input} placeholder="Email" onChangeText={setEmail} />
-          <TextInput style={styles.input} placeholder="Phone" onChangeText={val => setForm({ ...form, phone: val })} />
-          <TextInput style={styles.input} placeholder="Birthday" onChangeText={val => setForm({ ...form, birthday: val })} />
-          <TextInput style={styles.input} placeholder="Password" secureTextEntry onChangeText={val => setForm({ ...form, password: val })} />
+          <TextInput
+            style={styles.input}
+            placeholder="Name"
+            placeholderTextColor="black"
+            onChangeText={val => setForm({ ...form, name: val })}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            placeholderTextColor="black"
+            onChangeText={setEmail}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Phone"
+            placeholderTextColor="black"
+            onChangeText={val => setForm({ ...form, phone: val })}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Birthday"
+            placeholderTextColor="black"
+            onChangeText={val => setForm({ ...form, birthday: val })}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            placeholderTextColor="black"
+            secureTextEntry
+            onChangeText={val => setForm({ ...form, password: val })}
+          />
           <Button title="Register" onPress={handleRegister} />
-          
+
           <TouchableOpacity onPress={goToLogin} style={{ marginTop: 15 }}>
             <Text style={styles.link}>Already have an account? Login</Text>
           </TouchableOpacity>
@@ -64,7 +90,13 @@ export default function Register({ goToLogin }: { goToLogin: () => void }) {
       ) : (
         <>
           <Text style={styles.header}>Verify Email</Text>
-          <TextInput style={styles.input} placeholder="Enter 6-digit code" keyboardType="number-pad" onChangeText={setCode} />
+          <TextInput
+            style={styles.input}
+            placeholder="Enter 6-digit code"
+            placeholderTextColor="black"
+            keyboardType="number-pad"
+            onChangeText={setCode}
+          />
           <Button title="Verify Code" onPress={handleVerify} />
         </>
       )}

@@ -19,7 +19,7 @@ export default function Login({
     }
 
     try {
-      const res = await fetch('http://192.168.12.56:3001/api/login', {
+      const res = await fetch('https://legendbackend.onrender.com/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
